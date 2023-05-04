@@ -21,19 +21,24 @@ public class Stock {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object o) {
+        if (this == o)
             return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (o == null || getClass() != o.getClass())
             return false;
-        }
-        Stock stock = (Stock) obj;
+        Stock stock = (Stock) o;
         return Objects.equals(name, stock.name);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

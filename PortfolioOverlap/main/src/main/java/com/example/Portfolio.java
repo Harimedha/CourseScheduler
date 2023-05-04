@@ -1,27 +1,24 @@
 package com.example;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 public class Portfolio {
-    
-    private List<MutualFund> funds;
+
+    private Map<String, MutualFund> funds;
 
     public Portfolio() {
-        this.funds = new ArrayList<>();
+        funds = new HashMap<>();
     }
 
     public void addFund(MutualFund fund) {
-        funds.add(fund);
+        funds.put(fund.getFundName(), fund);
     }
 
     public MutualFund getFundByName(String fundName) {
-        Optional<MutualFund> fund = funds.stream()
-                .filter(f -> f.getFundName().equalsIgnoreCase(fundName))
-                .findFirst();
-
-        return fund.orElse(null);
+        return funds.get(fundName);
     }
 
     public void addStockToFund(String fundName, Stock stock) {
@@ -31,13 +28,10 @@ public class Portfolio {
         }
     }
 
-    public List<MutualFund> getFunds() {
-        return funds;
-    }
-
     public List<Double> findOverlapPercentages(MutualFund targetFund) {
+        System.out.println("Overlap fund calculation called");
         List<Double> overlapPercentages = new ArrayList<>();
-        for (MutualFund fund : funds) {
+        for (MutualFund fund : funds.values()) { // Iterate through the map values
             if (!fund.equals(targetFund)) {
                 double overlapPercentage = targetFund.calculateOverlapPercentage(fund);
                 overlapPercentages.add(overlapPercentage);
@@ -45,5 +39,13 @@ public class Portfolio {
         }
         return overlapPercentages;
     }
-    
+
+    public int getStocksSizeInFund(String fundName) {
+        MutualFund fund = getFundByName(fundName);
+        if (fund != null) {
+            return fund.getStocks().size();
+        }
+        return -1;
+    }
+
 }

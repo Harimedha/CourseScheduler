@@ -1,6 +1,5 @@
 package com.example;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,12 +33,13 @@ public class MutualFund {
     }
 
     public double calculateOverlapPercentage(MutualFund otherFund) {
+
         Set<Stock> intersection = this.stocks.stream()
                 .filter(otherFund.getStocks()::contains)
                 .collect(Collectors.toSet());
+
         int commonStocks = intersection.size();
-        // System.out.println(this.stocks.size() + "===========" +
-        // otherFund.getStocks().size());
+
         int totalStocks = this.stocks.size() + otherFund.getStocks().size();
 
         if (totalStocks == 0) {

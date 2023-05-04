@@ -1,15 +1,11 @@
 package com.example;
 
-import java.util.List;
+import java.util.Map;
 
-public class CalculateOverlapCommand implements Command {
+public class CalculateOverlapCommand extends PortfolioCommand {
 
-    private List<MutualFund> currentPortfolioFunds;
-    private Portfolio portfolio;
-
-    public CalculateOverlapCommand(List<MutualFund> currentPortfolioFunds, Portfolio portfolio) {
-        this.currentPortfolioFunds = currentPortfolioFunds;
-        this.portfolio = portfolio;
+    public CalculateOverlapCommand(Portfolio portfolio, Map<String, MutualFund> currentPortfolioFunds) {
+        super(portfolio, currentPortfolioFunds);
     }
 
     @Override
@@ -18,11 +14,13 @@ public class CalculateOverlapCommand implements Command {
         MutualFund targetFund = portfolio.getFundByName(targetFundName);
 
         if (targetFund != null) {
-            for (MutualFund otherFund : currentPortfolioFunds) {
+            for (MutualFund otherFund : currentPortfolioFunds.values()) {
+
                 if (!otherFund.equals(targetFund)) {
                     double overlapPercentage = targetFund.calculateOverlapPercentage(otherFund);
-                    System.out.printf("%s %s %.2f%%%n", targetFund.getFundName(), otherFund.getFundName(),
-                            overlapPercentage);
+                    if (overlapPercentage != 0.0)
+                        System.out.printf("%s %s %.2f%%%n", targetFund.getFundName(), otherFund.getFundName(),
+                                overlapPercentage);
                 }
             }
         } else {

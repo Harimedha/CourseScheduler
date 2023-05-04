@@ -3,13 +3,15 @@ package com.example;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class CommandProcessor {
 
     private Portfolio portfolio;
-    private List<MutualFund> currentPortfolioFunds = new ArrayList<>();
+    private Map<String, MutualFund> currentPortfolioFunds = new LinkedHashMap<>();
 
     public CommandProcessor(Portfolio portfolio) {
         this.portfolio = portfolio;
@@ -28,10 +30,10 @@ public class CommandProcessor {
                         cmd = new CurrentPortfolioCommand(portfolio, currentPortfolioFunds);
                         break;
                     case "CALCULATE_OVERLAP":
-                        cmd = new CalculateOverlapCommand(currentPortfolioFunds, portfolio);
+                        cmd = new CalculateOverlapCommand(portfolio, currentPortfolioFunds);
                         break;
                     case "ADD_STOCK":
-                        cmd = new AddStockCommand(portfolio);
+                        cmd = new AddStockCommand(portfolio, currentPortfolioFunds);
                         break;
                     default:
                         System.out.println("Unknown command: " + commandType);

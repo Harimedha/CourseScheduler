@@ -1,18 +1,33 @@
 package com.example;
 
-public class AddStockCommand implements Command {
-    private Portfolio portfolio;
+import java.util.Map;
 
-    public AddStockCommand(Portfolio portfolio) {
-        this.portfolio = portfolio;
+public class AddStockCommand extends PortfolioCommand {
+
+    public AddStockCommand(Portfolio portfolio, Map<String, MutualFund> currentPortfolioFunds) {
+        super(portfolio, currentPortfolioFunds);
     }
 
-    @Override
     public void process(String[] parts) {
         String fundName = parts[1];
-        String stockName = parts[2];
+        // String stockName = parts[2];
+        // int partslen = parts.length;
+        StringBuilder stockNameBuilder = new StringBuilder(parts[2]);
+        for (int i = 3; i < parts.length; i++) {
+            stockNameBuilder.append(" ").append(parts[i]);
+        }
+        String stockName = stockNameBuilder.toString();
+
         Stock stock = new Stock(stockName);
         portfolio.addStockToFund(fundName, stock);
-        // System.out.println("Added stock " + stockName + " to fund " + fundName);
+
+        MutualFund updatedFund = portfolio.getFundByName(fundName);
+        if (currentPortfolioFunds.containsKey(fundName)) {
+            currentPortfolioFunds.put(fundName, updatedFund);
+        }
+
+        // System.out.println("Added stock " + stockName + " to fund " + fundName + "
+        // Size "
+        // + portfolio.getStocksSizeInFund(fundName));
     }
 }
